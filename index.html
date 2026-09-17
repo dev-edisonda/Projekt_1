@@ -1,0 +1,497 @@
+<title>Cyberforteca</title>
+<style>
+  :root{
+    --bg:#0a0e14;
+    --bg-raised:#111826;
+    --bg-raised-2:#161f30;
+    --border:#22304655;
+    --border-strong:#2c3d57;
+    --text:#e7edf5;
+    --text-dim:#8fa0b5;
+    --text-faint:#5c6b81;
+    --accent:#37e0a0;
+    --accent-dim:#1c6b52;
+    --accent-ink:#052018;
+    --alert:#ff5c66;
+    --alert-dim:#4a1a1f;
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Unbounded",system-ui,sans-serif;
+    font-weight:600;
+    line-height:1.15;
+    text-wrap:balance;
+    margin:0;
+  }
+  p{margin:0;color:var(--text-dim);line-height:1.65;}
+  a{color:inherit;}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:24px;}
+  section{padding-block:88px;}
+  @media (max-width:720px){section{padding-block:56px;}}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;
+    background:var(--accent);
+    border-radius:1px;
+    transform:rotate(45deg);
+    flex:none;
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:50;
+    background:rgba(10,14,20,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-row{
+    display:flex;align-items:center;justify-content:space-between;
+    height:72px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .brand span{
+    font-family:"Unbounded",system-ui,sans-serif;
+    font-size:17px;font-weight:600;letter-spacing:.01em;color:var(--text);
+  }
+  .brand-mark{width:30px;height:30px;flex:none;}
+  .nav-links{
+    display:flex;align-items:center;gap:30px;
+    font-size:14.5px;
+  }
+  .nav-links a{
+    text-decoration:none;color:var(--text-dim);
+    transition:color .15s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{color:var(--text);}
+  .nav-right{display:flex;align-items:center;gap:18px;}
+  .nav-phone{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:13.5px;color:var(--text-dim);
+    display:flex;flex-direction:column;line-height:1.3;
+    text-align:right;
+  }
+  .nav-phone b{color:var(--text);font-weight:500;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:12px 20px;border-radius:8px;
+    font-size:14px;font-weight:500;text-decoration:none;
+    border:1px solid transparent;cursor:pointer;
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    transition:transform .12s ease, border-color .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);}
+  .btn-primary:hover{background:#4bf0b0;}
+  .btn-ghost{background:transparent;border-color:var(--border-strong);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--text-dim);}
+  .btn-alert{background:var(--alert-dim);color:#ffd7d9;border-color:#7a2830;font-size:13px;padding:9px 14px;}
+  .btn-alert:hover{background:#5c2129;}
+  .btn-alert::before{
+    content:"";width:7px;height:7px;border-radius:50%;background:var(--alert);
+    box-shadow:0 0 0 3px #ff5c6626;flex:none;
+  }
+
+  .burger{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero .wrap{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;
+    padding-block:76px 40px;
+  }
+  @media (max-width:900px){.hero .wrap{grid-template-columns:1fr;padding-block:44px 20px;}}
+  .hero h1{font-size:clamp(30px,4.4vw,48px);margin-block:18px 20px;letter-spacing:-.01em;}
+  .hero h1 em{color:var(--accent);font-style:normal;}
+  .hero p.lead{font-size:16.5px;max-width:52ch;color:var(--text-dim);}
+  .hero-ctas{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
+  .trust-line{
+    margin-top:34px;padding-top:22px;border-top:1px solid var(--border);
+    display:flex;gap:22px;flex-wrap:wrap;
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:12px;color:var(--text-faint);letter-spacing:.03em;
+  }
+  .trust-line b{color:var(--text-dim);font-weight:500;}
+
+  .hero-panel{
+    background:linear-gradient(160deg,var(--bg-raised),var(--bg-raised-2));
+    border:1px solid var(--border-strong);
+    border-radius:16px;
+    padding:22px 22px 18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel-head{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:11.5px;color:var(--text-faint);letter-spacing:.06em;
+    padding-bottom:14px;border-bottom:1px solid var(--border);
+    margin-bottom:16px;
+  }
+  .panel-head .live{display:flex;align-items:center;gap:7px;color:var(--accent);}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.8s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 #37e0a055;}50%{opacity:.55;box-shadow:0 0 0 5px #37e0a000;}}
+
+  .radar-svg{display:block;width:100%;height:auto;}
+  .radar-sweep{transform-origin:150px 150px;animation:spin 5s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .blip{animation:blip 2.4s ease-in-out infinite;}
+  .blip.b2{animation-delay:.7s;}
+  .blip.b3{animation-delay:1.5s;}
+  @keyframes blip{0%,100%{opacity:.25;}50%{opacity:1;}}
+
+  .panel-log{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:11.5px;color:var(--text-faint);
+    display:flex;flex-direction:column;gap:6px;
+    margin-top:14px;padding-top:14px;border-top:1px solid var(--border);
+  }
+  .panel-log span b{color:var(--text-dim);font-weight:400;}
+  .panel-log .ok{color:var(--accent);}
+
+  @media (prefers-reduced-motion:reduce){
+    .radar-sweep, .live-dot, .blip{animation:none;}
+  }
+
+  /* ---------- STATS ---------- */
+  .stats{padding-block:0 0;}
+  .stats .wrap{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  }
+  @media (max-width:720px){.stats .wrap{grid-template-columns:repeat(2,1fr);}}
+  .stat{
+    padding:30px 22px;border-left:1px solid var(--border);
+  }
+  .stat:first-child{border-left:none;}
+  @media (max-width:720px){
+    .stat:nth-child(odd){border-left:none;}
+    .stat:nth-child(-n+2){border-top:none;}
+    .stat{border-top:1px solid var(--border);}
+  }
+  .stat b{
+    font-family:"Unbounded",system-ui,sans-serif;
+    display:block;font-size:clamp(22px,3vw,30px);color:var(--text);
+    font-variant-numeric:tabular-nums;
+  }
+  .stat span{font-size:13px;color:var(--text-faint);}
+
+  /* ---------- SECTION HEAD ---------- */
+  .sec-head{max-width:620px;margin-bottom:44px;}
+  .sec-head h2{font-size:clamp(24px,3vw,32px);margin-top:14px;}
+  .sec-head p{margin-top:12px;font-size:15.5px;}
+
+  /* ---------- SERVICES ---------- */
+  .services-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    background:var(--border);border:1px solid var(--border);border-radius:14px;
+    overflow:hidden;
+  }
+  @media (max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:600px){.services-grid{grid-template-columns:1fr;}}
+  .svc{
+    background:var(--bg-raised);padding:28px 26px;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .svc-icon{
+    width:38px;height:38px;border-radius:9px;
+    background:var(--accent-dim);
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+  }
+  .svc-icon svg{width:19px;height:19px;stroke:var(--accent);}
+  .svc h3{font-size:16.5px;font-family:"IBM Plex Sans",system-ui,sans-serif;font-weight:600;}
+  .svc p{font-size:14px;}
+
+  /* ---------- PROCESS ---------- */
+  .process-list{display:flex;flex-direction:column;}
+  .proc-item{
+    display:grid;grid-template-columns:64px 1fr;gap:22px;
+    padding-block:26px;border-top:1px solid var(--border);
+  }
+  .process-list .proc-item:last-child{border-bottom:1px solid var(--border);}
+  .proc-num{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:14px;color:var(--accent);padding-top:3px;
+  }
+  .proc-item h3{font-size:17px;margin-bottom:6px;}
+  .proc-item p{font-size:14.5px;max-width:60ch;}
+  @media (max-width:600px){.proc-item{grid-template-columns:1fr;gap:6px;}}
+
+  /* ---------- CERTS ---------- */
+  .certs-row{display:flex;flex-wrap:wrap;gap:12px;}
+  .cert-badge{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:12.5px;letter-spacing:.04em;color:var(--text-dim);
+    border:1px solid var(--border-strong);border-radius:999px;
+    padding:9px 16px;
+  }
+  .certs .sec-head{margin-bottom:26px;}
+  .certs-note{margin-top:22px;max-width:66ch;font-size:14.5px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media (max-width:800px){.contact .wrap{grid-template-columns:1fr;}}
+  .contact-card{
+    background:var(--bg-raised);border:1px solid var(--border-strong);
+    border-radius:14px;padding:32px;
+  }
+  .contact-card h3{font-size:19px;margin-bottom:16px;}
+  .contact-line{
+    display:flex;gap:12px;padding-block:10px;
+    border-top:1px solid var(--border);
+    font-size:14.5px;align-items:baseline;
+  }
+  .contact-line:first-of-type{border-top:none;}
+  .contact-line .k{color:var(--text-faint);width:88px;flex:none;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;font-family:"JetBrains Mono",ui-monospace,monospace;}
+  .contact-line .v{color:var(--text);}
+  .contact-card.alert-card{
+    border-color:#5c2129;
+    background:linear-gradient(160deg,var(--bg-raised),#1c1114);
+  }
+  .contact-card.alert-card .hotline{
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:26px;color:var(--alert);margin-block:8px 6px;
+    font-variant-numeric:tabular-nums;
+  }
+  .contact-card.alert-card p{font-size:13.5px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border);padding-block:28px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  footer p{font-size:12.5px;color:var(--text-faint);}
+  footer .brand span{font-size:14px;}
+
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 2 28 8V16C28 23.5 22.8 28.6 16 30C9.2 28.6 4 23.5 4 16V8L16 2Z" stroke="#37e0a0" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M11 16 14.5 19.5 21.5 12" stroke="#37e0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>CYBERFORTECA</span>
+    </a>
+    <nav class="nav-links" aria-label="Główna nawigacja">
+      <a href="#uslugi">Usługi</a>
+      <a href="#proces">Proces</a>
+      <a href="#certyfikaty">Certyfikaty</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
+    <div class="nav-right">
+      <div class="nav-phone">
+        <span>Recepcja</span>
+        <b>+48 61 100 20 30</b>
+      </div>
+      <a class="btn btn-alert" href="tel:+48800100200">Zgłoś incydent</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">SOC 24/7 · CERT · Red Team</p>
+        <h1>Bezpieczeństwo, które <em>wytrzymuje</em> atak.</h1>
+        <p class="lead">Cyberforteca projektuje, wdraża i monitoruje systemy obrony cyfrowej dla firm produkcyjnych, finansowych i publicznych, które nie mogą sobie pozwolić na przestój.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#kontakt">Umów konsultację</a>
+          <a class="btn btn-ghost" href="#uslugi">Zobacz usługi</a>
+        </div>
+        <div class="trust-line">
+          <span><b>9</b> lat na rynku</span>
+          <span><b>140+</b> wdrożeń SOC</span>
+          <span><b>ISO/IEC 27001</b> · <b>NIS2</b> · <b>RODO</b></span>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div class="panel-head">
+          <span>SOC · PODGLĄD NA ŻYWO</span>
+          <span class="live"><span class="live-dot"></span>MONITOROWANIE</span>
+        </div>
+        <svg class="radar-svg" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="150" cy="150" r="70" fill="none" stroke="#22304655" stroke-width="1"/>
+          <circle cx="150" cy="150" r="46" fill="none" stroke="#22304655" stroke-width="1"/>
+          <circle cx="150" cy="150" r="22" fill="none" stroke="#22304655" stroke-width="1"/>
+          <line x1="80" y1="150" x2="220" y2="150" stroke="#22304655" stroke-width="1"/>
+          <line x1="150" y1="80" x2="150" y2="220" stroke="#22304655" stroke-width="1"/>
+          <g class="radar-sweep">
+            <path d="M150 150 L150 80 A70 70 0 0 1 210 115 Z" fill="#37e0a0" opacity=".14"/>
+            <line x1="150" y1="150" x2="150" y2="80" stroke="#37e0a0" stroke-width="1.5"/>
+          </g>
+          <circle class="blip" cx="182" cy="118" r="3.5" fill="#37e0a0"/>
+          <circle class="blip b2" cx="115" cy="175" r="3.5" fill="#37e0a0"/>
+          <circle class="blip b3" cx="168" cy="188" r="3.5" fill="#ff5c66"/>
+        </svg>
+        <div class="panel-log mono">
+          <span><b>02:14:07</b>&nbsp; skan sieci zakończony &nbsp;<span class="ok">OK</span></span>
+          <span><b>02:14:22</b>&nbsp; anomalia ruchu — węzeł 4B &nbsp;<span class="ok">zablokowano</span></span>
+          <span><b>02:15:03</b>&nbsp; kopia zapasowa zweryfikowana &nbsp;<span class="ok">OK</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="wrap">
+      <div class="stat"><b>9 lat</b><span>ochrony infrastruktury krytycznej</span></div>
+      <div class="stat"><b>140+</b><span>zrealizowanych wdrożeń SOC</span></div>
+      <div class="stat"><b>24/7</b><span>gotowość zespołu CERT</span></div>
+      <div class="stat"><b>&lt;15 min</b><span>śr. czas reakcji na incydent</span></div>
+    </div>
+  </section>
+
+  <section id="uslugi">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Zakres działania</p>
+        <h2>Usługi</h2>
+        <p>Od testów penetracyjnych po całodobowy monitoring — kompleksowa ochrona dopasowana do skali organizacji.</p>
+      </div>
+      <div class="services-grid">
+        <div class="svc">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 20 5v6c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V5l8-3Z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>Testy penetracyjne</h3>
+          <p>Red team oraz testy penetracyjne aplikacji, sieci i infrastruktury chmurowej zgodne z metodyką OWASP i PTES.</p>
+        </div>
+        <div class="svc">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 21h8M12 16v5"/><circle cx="12" cy="10" r="2.4"/></svg></div>
+          <h3>SOC 24/7</h3>
+          <p>Całodobowy monitoring zdarzeń, korelacja logów i wykrywanie anomalii w czasie rzeczywistym.</p>
+        </div>
+        <div class="svc">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v5M12 3l7 3-1 6c-.6 4-3 6.6-6 8-3-1.4-5.4-4-6-8l-1-6 7-3Z"/></svg></div>
+          <h3>Reagowanie na incydenty</h3>
+          <p>Zespół CSIRT gotowy do działania w 15 minut od zgłoszenia — analiza powłamaniowa i odtwarzanie środowiska.</p>
+        </div>
+        <div class="svc">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 3v2h6V3M9 9h6M9 13h6M9 17h3"/></svg></div>
+          <h3>Audyt i zgodność</h3>
+          <p>Audyty zgodności z ISO/IEC 27001, RODO oraz dyrektywą NIS2 wraz z planem wdrożenia rekomendacji.</p>
+        </div>
+        <div class="svc">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17a4 4 0 0 1 0-8 5.5 5.5 0 0 1 10.6-1.5A4 4 0 0 1 17 17H7Z"/><path d="M12 13v5m-2-2 2 2 2-2"/></svg></div>
+          <h3>Bezpieczeństwo chmury</h3>
+          <p>Przegląd środowisk AWS, Azure i GCP pod kątem błędów konfiguracji i nadmiarowych uprawnień.</p>
+        </div>
+        <div class="svc">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-5 7-5s7 1.7 7 5"/><path d="M17 4.5a3 3 0 0 1 0 7"/><path d="M22 19c0-2.6-2-4.2-4.5-4.7"/></svg></div>
+          <h3>Szkolenia i symulacje</h3>
+          <p>Szkolenia z higieny cyfrowej oraz symulowane kampanie phishingowe dla zespołów pracowników.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proces">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Współpraca krok po kroku</p>
+        <h2>Jak wdrażamy ochronę</h2>
+        <p>Cztery etapy — od diagnozy powierzchni ataku po stały nadzór operacyjny.</p>
+      </div>
+      <div class="process-list">
+        <div class="proc-item">
+          <div class="proc-num">01</div>
+          <div><h3>Diagnoza</h3><p>Audyt bezpieczeństwa i mapowanie powierzchni ataku organizacji — systemów, sieci i procesów.</p></div>
+        </div>
+        <div class="proc-item">
+          <div class="proc-num">02</div>
+          <div><h3>Strategia</h3><p>Plan wdrożenia zabezpieczeń dopasowany do poziomu ryzyka, branży i budżetu.</p></div>
+        </div>
+        <div class="proc-item">
+          <div class="proc-num">03</div>
+          <div><h3>Wdrożenie</h3><p>Konfiguracja narzędzi ochronnych, segmentacja sieci i utwardzenie systemów produkcyjnych.</p></div>
+        </div>
+        <div class="proc-item">
+          <div class="proc-num">04</div>
+          <div><h3>Monitoring 24/7</h3><p>Stały nadzór SOC oraz gotowość zespołu CERT do reakcji na incydent w każdej chwili.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certyfikaty" class="certs">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Standardy i zgodność</p>
+        <h2>Certyfikaty i normy</h2>
+      </div>
+      <div class="certs-row">
+        <span class="cert-badge">ISO/IEC 27001</span>
+        <span class="cert-badge">RODO / GDPR</span>
+        <span class="cert-badge">Dyrektywa NIS2</span>
+        <span class="cert-badge">ISO 22301</span>
+        <span class="cert-badge">SOC 2 Type II</span>
+        <span class="cert-badge">PN-EN ISO/IEC 27701</span>
+      </div>
+      <p class="certs-note">Nasze procesy operacyjne oraz środowisko SOC podlegają regularnym audytom zewnętrznym, zgodnym z wymaganiami sektora finansowego i infrastruktury krytycznej.</p>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="sec-head" style="margin-bottom:32px;">
+        <p class="eyebrow">Skontaktuj się</p>
+        <h2>Porozmawiajmy o bezpieczeństwie Twojej firmy</h2>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="contact-card">
+        <h3>Cyberforteca sp. z o.o.</h3>
+        <div class="contact-line"><span class="k">Adres</span><span class="v">ul. Fortyfikacyjna 12, 61-131 Poznań</span></div>
+        <div class="contact-line"><span class="k">Telefon</span><span class="v">+48 61 100 20 30</span></div>
+        <div class="contact-line"><span class="k">E-mail</span><span class="v">kontakt@cyberforteca.pl</span></div>
+        <div class="contact-line"><span class="k">Godziny</span><span class="v">Biuro: pon.–pt. 8:00–17:00 · SOC: całodobowo</span></div>
+      </div>
+      <div class="contact-card alert-card">
+        <h3>Linia alarmowa CERT</h3>
+        <p>Podejrzewasz włamanie lub wyciek danych? Zespół reagowania na incydenty przyjmuje zgłoszenia przez całą dobę.</p>
+        <div class="hotline mono">+48 800 100 200</div>
+        <p>Śr. czas podjęcia działania: poniżej 15 minut od zgłoszenia.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;">
+        <path d="M16 2 28 8V16C28 23.5 22.8 28.6 16 30C9.2 28.6 4 23.5 4 16V8L16 2Z" stroke="#37e0a0" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M11 16 14.5 19.5 21.5 12" stroke="#37e0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>CYBERFORTECA</span>
+    </a>
+    <p>© 2026 Cyberforteca sp. z o.o. Wszelkie prawa zastrzeżone.</p>
+  </div>
+</footer>
